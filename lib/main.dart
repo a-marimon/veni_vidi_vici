@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:veni_vidi_vici/blockchain_ui.dart';
+import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: "Hello"),
     );
   }
 }
@@ -75,34 +79,34 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: Container(
+        child: TextButton(
+          onPressed: () async {
+
+            var _url = "https://metamask.app.link/dapp/example.com";
+            if (!await launch(_url)) throw 'Could not launch $_url';
+
+
+
+            // final connector = WalletConnect(
+            //   bridge: 'https://bridge.walletconnect.org',
+            //   clientMeta: PeerMeta(
+            //     name: 'WalletConnect',
+            //     description: 'WalletConnect Developer App',
+            //     url: 'https://walletconnect.org',
+            //     icons: [
+            //       'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
+            //     ],
+            //   ),
+            // );
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const MyBlockchainHome(),
+              ),
+            );
+          },
+          child: Text('Sign In'),
         ),
       ),
       floatingActionButton: FloatingActionButton(
