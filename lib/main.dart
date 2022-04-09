@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:veni_vidi_vici/blockchain_ui.dart';
+import 'package:veni_vidi_vici/wallet_id.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 void main() {
@@ -72,11 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       // backgroundColor: Colors.amberAccent,
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -86,23 +82,19 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
+            ElevatedButton(
               onPressed: () async {
                 var _url = "https://metamask.app.link/dapp/example.com";
                 if (!await launch(_url)) throw 'Could not launch $_url';
 
-
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const MyBlockchainHome(),
+                    builder: (context) => WalletIdCollector(),
                   ),
                 );
               },
-              child: Text(
-                'Sign In',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            )
+              child: Image.asset('assets/metamask-login-button.png'),
+            ),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
