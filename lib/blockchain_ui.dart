@@ -4,7 +4,9 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 class MyBlockchainHome extends StatefulWidget {
-  const MyBlockchainHome({Key? key}) : super(key: key);
+  final String id;
+
+  const MyBlockchainHome({Key? key, required this.id}) : super(key: key);
 
   @override
   State<MyBlockchainHome> createState() => _MyBlockchainHomeState();
@@ -15,35 +17,37 @@ class _MyBlockchainHomeState extends State<MyBlockchainHome> {
   late Web3Client ethClient;
 
 //Ethereum address
-  final String myAddress = "0x232adFFc0b8471fE064e7Eecb372dD5361CFb3e3";
+//   final String myAddress = "0x232adFFc0b8471fE064e7Eecb372dD5361CFb3e3";
+  late String myAddress;
 
 //url from Infura
-  final String blockchainUrl =
+  static const String BLOCKCHAIN_URL =
       "https://rinkeby.infura.io/v3/5cafc22776294a9faaa664875580dc92";
-
+  static const String CONTRACT_ADDRESS = "0xcCAc5DFb31B4AB70A7FA1721063c9D3f4a6009D0";
+  static const String PRIV_KEY = "cb4afe22a31bad91ac085d10d30f48c2ad1479af54ec1b7d3311477e5abba61c";
 //store the value of alpha and beta
   var totalVotesA;
   var totalVotesB;
 
   @override
   void initState() {
+    super.initState();
     httpClient = Client();
     ethClient = Web3Client(
-      blockchainUrl,
+      BLOCKCHAIN_URL,
       httpClient,
     );
     getTotalVotes();
-    super.initState();
+    myAddress = widget.id;
+
   }
 
   Future<DeployedContract> getContract() async {
 //obtain our smart contract using rootbundle to access our json file
     String abiFile = await rootBundle.loadString("assets/contract.json");
 
-    String contractAddress = "0xcCAc5DFb31B4AB70A7FA1721063c9D3f4a6009D0";
-
     final contract = DeployedContract(ContractAbi.fromJson(abiFile, "Voting"),
-        EthereumAddress.fromHex(contractAddress));
+        EthereumAddress.fromHex(CONTRACT_ADDRESS));
 
     return contract;
   }
@@ -78,8 +82,7 @@ class _MyBlockchainHomeState extends State<MyBlockchainHome> {
   Future<void> vote(bool voteAlpha) async {
     snackBar(label: "Recording vote");
     //obtain private key for write operation
-    Credentials key = EthPrivateKey.fromHex(
-        "cb4afe22a31bad91ac085d10d30f48c2ad1479af54ec1b7d3311477e5abba61c");
+    Credentials key = EthPrivateKey.fromHex(PRIV_KEY);
 
     //obtain our contract from abi in json file
     final contract = await getContract();

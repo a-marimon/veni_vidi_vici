@@ -52,8 +52,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -61,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
     });
   }
 
@@ -74,45 +71,40 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      // backgroundColor: Colors.amberAccent,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Container(
-        child: TextButton(
-          onPressed: () async {
-
-            var _url = "https://metamask.app.link/dapp/example.com";
-            if (!await launch(_url)) throw 'Could not launch $_url';
-
-
-
-            // final connector = WalletConnect(
-            //   bridge: 'https://bridge.walletconnect.org',
-            //   clientMeta: PeerMeta(
-            //     name: 'WalletConnect',
-            //     description: 'WalletConnect Developer App',
-            //     url: 'https://walletconnect.org',
-            //     icons: [
-            //       'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
-            //     ],
-            //   ),
-            // );
-
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const MyBlockchainHome(),
-              ),
-            );
-          },
-          child: Text('Sign In'),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/login-bg.jpg"), fit: BoxFit.cover),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () async {
+                var _url = "https://metamask.app.link/dapp/example.com";
+                if (!await launch(_url)) throw 'Could not launch $_url';
+
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MyBlockchainHome(),
+                  ),
+                );
+              },
+              child: Text(
+                'Sign In',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            )
+          ],
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
