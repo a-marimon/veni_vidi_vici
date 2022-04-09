@@ -38,6 +38,7 @@ class _MyBlockchainHomeState extends State<MyBlockchainHome> {
   var totalVotesA;
   var totalVotesB;
   bool showProgress = false;
+  String filename = '';
 
   @override
   void initState() {
@@ -205,6 +206,7 @@ class _MyBlockchainHomeState extends State<MyBlockchainHome> {
                             await FilePicker.platform.pickFiles();
                         setState(() {
                           showProgress = true;
+                          filename = result?.names.first ?? 'test.png';
                         });
                         Future.delayed(const Duration(seconds: 5), () {
                           setState(() {
@@ -242,6 +244,7 @@ class _MyBlockchainHomeState extends State<MyBlockchainHome> {
                       // style: ButtonStyle(backgroundColor:  Color(0xFFF3901A)!),
                     ),
                   ),
+                  Visibility(visible: showProgress, child: Text(filename)),
                   Visibility(
                     visible: showProgress,
                     child: LinearProgressIndicator(),
